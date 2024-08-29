@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
+buildscript {
+    ext.kotlin_version = '1.2.51'
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 android {
     compileSdkVersion 26
 
@@ -19,6 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'consumer-rules.pro'
         }
     }
     compileOptions {
@@ -30,7 +45,21 @@ android {
 repositories {
     maven { url 'https://jitpack.io' }
 }
-
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.Scarlettzx'
+            artifactId = 'MediaResizer'
+            version = "1.0"
+            pom {
+                description = 'First Media Lib'
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
